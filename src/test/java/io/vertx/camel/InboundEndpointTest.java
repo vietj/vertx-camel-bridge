@@ -330,6 +330,9 @@ public class InboundEndpointTest {
     a.awaitSuccess(20000);
     System.out.println("bridge started");
 
+    // Sleep 2 seconds...
+    Thread.sleep(2000);
+
     AtomicReference<StompClientConnection> clientRef = new AtomicReference<>();
     System.out.println("CONNECTING");
     StompClient.create(vertx).connect(context.asyncAssertSuccess(client -> {
