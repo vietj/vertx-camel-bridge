@@ -83,6 +83,7 @@ public class CamelToVertxProcessor implements AsyncProcessor {
           return false;
         } else {
           // No reply expected.
+          System.out.println("SENDING BUS MESSAGE TO " + inbound.getAddress());
           vertx.eventBus().send(inbound.getAddress(), body, delivery);
         }
       }

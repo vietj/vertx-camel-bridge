@@ -318,6 +318,7 @@ public class InboundEndpointTest {
 
     vertx.eventBus().consumer("test", message -> {
       // We get a buffer.
+      System.out.println("GOT MESSAGE!");
       context.assertEquals("hello", message.body().toString());
       async.complete();
     });
