@@ -20,6 +20,7 @@ import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.stomp.StompClient;
+import io.vertx.ext.stomp.StompClientConnection;
 import io.vertx.ext.stomp.StompServer;
 import io.vertx.ext.stomp.StompServerHandler;
 import io.vertx.ext.unit.Async;
@@ -37,6 +38,8 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import java.util.concurrent.atomic.AtomicReference;
 
 import static com.jayway.awaitility.Awaitility.await;
 import static io.vertx.camel.InboundMapping.fromCamel;
