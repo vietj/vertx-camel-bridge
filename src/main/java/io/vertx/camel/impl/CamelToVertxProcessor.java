@@ -49,6 +49,7 @@ public class CamelToVertxProcessor implements AsyncProcessor {
 
   @Override
   public void process(Exchange exchange) throws Exception {
+    System.out.println("GOT EXCHANGE " + exchange);
     AsyncProcessorHelper.process(this, exchange);
   }
 
