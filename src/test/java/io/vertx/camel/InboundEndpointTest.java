@@ -336,7 +336,9 @@ public class InboundEndpointTest {
       StompClientConnection client = connection.result();
       clientRef.set(client);
       System.out.println("CONNECTED / SENDING");
-      client.send("queue", Buffer.buffer("hello"));
+      client.send("queue", Buffer.buffer("hello"), context.asyncAssertSuccess(receipt -> {
+        System.out.println("GOT RECEIPT");
+      }));
     });
 
     try {
