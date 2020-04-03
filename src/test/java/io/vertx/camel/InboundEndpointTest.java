@@ -299,10 +299,12 @@ public class InboundEndpointTest {
   @Test
   public void testWithStomp(TestContext context) throws Exception {
     StompServerHandler serverHandler = StompServerHandler.create(vertx);
-    StompServer.create(vertx).handler(serverHandler).listen(ar -> {
-      stomp = ar.result();
-    });
+    StompServer.create(vertx).handler(serverHandler).listen(context.asyncAssertSuccess(s -> {
+      stomp = s;
+    }));
+    System.out.println("AWAITING");
     await().atMost(DEFAULT_TIMEOUT).until(() -> stomp != null);
+    System.out.println("AWAITED");
 
     Async async = context.async();
 
@@ -320,10 +322,20 @@ public class InboundEndpointTest {
     camel.start();
     BridgeHelper.startBlocking(bridge);
 
+    AtomicReference<StompClientConnection> clientRef = new AtomicReference<>();
+    System.out.println("CONNECTING");
     StompClient.create(vertx).connect(connection -> {
-      connection.result().send("queue", Buffer.buffer("hello"));
-      connection.result().close();
+      StompClientConnection client = connection.result();
+      clientRef.set(client);
+      System.out.println("CONNECTED / SENDING");
+      client.send("queue", Buffer.buffer("hello"));
     });
+
+    try {
+      async.awaitSuccess(20000);
+    } finally {
+      clientRef.get().close();
+    }
   }
 
   @Test
