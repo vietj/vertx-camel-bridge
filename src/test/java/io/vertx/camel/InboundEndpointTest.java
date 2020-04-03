@@ -323,7 +323,11 @@ public class InboundEndpointTest {
     });
 
     camel.start();
-    BridgeHelper.startBlocking(bridge);
+    Async a = context.async();
+    System.out.println("starting bridge");
+    bridge.start(context.asyncAssertSuccess(v -> a.complete()));
+    a.awaitSuccess(20000);
+    System.out.println("bridge started");
 
     AtomicReference<StompClientConnection> clientRef = new AtomicReference<>();
     System.out.println("CONNECTING");
