@@ -332,14 +332,13 @@ public class InboundEndpointTest {
 
     AtomicReference<StompClientConnection> clientRef = new AtomicReference<>();
     System.out.println("CONNECTING");
-    StompClient.create(vertx).connect(connection -> {
-      StompClientConnection client = connection.result();
+    StompClient.create(vertx).connect(context.asyncAssertSuccess(client -> {
       clientRef.set(client);
       System.out.println("CONNECTED / SENDING");
       client.send("queue", Buffer.buffer("hello"), context.asyncAssertSuccess(receipt -> {
         System.out.println("GOT RECEIPT");
       }));
-    });
+    }));
 
     try {
       async.awaitSuccess(20000);
